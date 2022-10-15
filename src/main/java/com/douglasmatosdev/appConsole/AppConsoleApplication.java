@@ -7,6 +7,8 @@ import java.util.List;
 // import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.douglasmatosdev.appConsole.entidades.Cliente;
+
 @SpringBootApplication
 public class AppConsoleApplication {
 
@@ -43,9 +45,7 @@ public class AppConsoleApplication {
 	 */
 
 	public static void main(String[] args) {
-		List<String> clientes = new ArrayList<String>();
-		List<Integer> pedidosDosClientesEmQuantidade = new ArrayList<Integer>();
-		List<Double> valoresASerPagoPeloCliente = new ArrayList<Double>();
+		List<Cliente> clientes = new ArrayList<Cliente>();
 
 		while (true) {
 			Console cnsl = System.console();
@@ -57,12 +57,14 @@ public class AppConsoleApplication {
 				break;
 			}
 
-			String nome = cnsl.readLine("Digite o nome do cliente:\n");
-			int quantidadeDeCaixas = Integer
-					.parseInt(cnsl.readLine("Digite a quantidade de caixas que o " + nome + " deseja: \n"));
+			Cliente cliente = new Cliente(null, sair, sair);
 
-			clientes.add(nome);
-			pedidosDosClientesEmQuantidade.add(quantidadeDeCaixas);
+			cliente.setNome(cnsl.readLine("Digite o nome do cliente:\n"));
+			int quantidadeDeCaixas = Integer
+					.parseInt(
+							cnsl.readLine("Digite a quantidade de caixas que o " + cliente.getNome() + " deseja: \n"));
+
+			cliente.setQuantidadeDeCaixas(quantidadeDeCaixas);
 
 			System.out.println("[" + quantidadeDeCaixas + "]");
 
@@ -126,7 +128,9 @@ public class AppConsoleApplication {
 
 			double lucroAReceber = (valorTotalAlterado * porcentagemDeLucro / 100);
 
-			valoresASerPagoPeloCliente.add(valorTotalAlterado);
+			cliente.setValorTotal(valorTotalAlterado);
+
+			clientes.add(cliente);
 
 			System.out.println("============================================\n");
 			System.out.println("Parabéns pela venda!!!\n\n");
@@ -146,10 +150,11 @@ public class AppConsoleApplication {
 			System.out.println("============================================\n\n");
 
 			for (int i = 0; i < clientes.size(); i++) {
+				Cliente cli = clientes.get(i);
 				System.out.println("============================================\n\n");
-				System.out.println("Cliente: " + clientes.get(i));
-				System.out.println("Quantidade de caixas: " + pedidosDosClientesEmQuantidade.get(i));
-				System.out.println("Valor total a pagar: " + valoresASerPagoPeloCliente.get(i));
+				System.out.println("Cliente: " + cli.getNome());
+				System.out.println("Quantidade de caixas: " + cli.getQuantidadeDeCaixas());
+				System.out.println("Valor total a pagar: " + cli.getValorTotal());
 				System.out.println("============================================\n\n");
 			}
 		}
