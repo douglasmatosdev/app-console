@@ -1,6 +1,8 @@
 package com.douglasmatosdev.appConsole;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 // import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,9 +37,16 @@ public class AppConsoleApplication {
 	 * O lucro do comerciante será de 45% em suas vendas
 	 * 
 	 * Dar um relatório final a operação acima.
+	 * 
+	 * Armazene o nome e o valor do cliente para que o final da operaão você possa
+	 * mostrar o nome ea quantidade de caixas
 	 */
 
 	public static void main(String[] args) {
+		List<String> clientes = new ArrayList<String>();
+		List<Integer> pedidosDosClientesEmQuantidade = new ArrayList<Integer>();
+		List<Double> valoresASerPagoPeloCliente = new ArrayList<Double>();
+
 		while (true) {
 			Console cnsl = System.console();
 			System.out.println("============================");
@@ -48,7 +57,14 @@ public class AppConsoleApplication {
 				break;
 			}
 
-			int quantidadeDeCaixas = Integer.parseInt(cnsl.readLine("Digite a quantidade de caixas: \n"));
+			String nome = cnsl.readLine("Digite o nome do cliente:\n");
+			int quantidadeDeCaixas = Integer
+					.parseInt(cnsl.readLine("Digite a quantidade de caixas que o " + nome + " deseja: \n"));
+
+			clientes.add(nome);
+			pedidosDosClientesEmQuantidade.add(quantidadeDeCaixas);
+
+			System.out.println("[" + quantidadeDeCaixas + "]");
 
 			double valorDaLaranjaUnidade = 0.50;
 			int porcentagemDeLucro = 40;
@@ -110,6 +126,8 @@ public class AppConsoleApplication {
 
 			double lucroAReceber = (valorTotalAlterado * porcentagemDeLucro / 100);
 
+			valoresASerPagoPeloCliente.add(valorTotalAlterado);
+
 			System.out.println("============================================\n");
 			System.out.println("Parabéns pela venda!!!\n\n");
 			System.out.println("O lucro é de R$ " + lucroAReceber);
@@ -126,6 +144,14 @@ public class AppConsoleApplication {
 			}
 			System.out.println(" ");
 			System.out.println("============================================\n\n");
+
+			for (int i = 0; i < clientes.size(); i++) {
+				System.out.println("============================================\n\n");
+				System.out.println("Cliente: " + clientes.get(i));
+				System.out.println("Quantidade de caixas: " + pedidosDosClientesEmQuantidade.get(i));
+				System.out.println("Valor total a pagar: " + valoresASerPagoPeloCliente.get(i));
+				System.out.println("============================================\n\n");
+			}
 		}
 		// SpringApplication.run(AppConsoleApplication.class, args);
 	}
