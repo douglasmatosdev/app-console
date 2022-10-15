@@ -38,88 +38,95 @@ public class AppConsoleApplication {
 	 */
 
 	public static void main(String[] args) {
-		System.out.println("============================");
-		System.out.println("		Welcome!!!			");
-		System.out.println("============================");
-
-		Console cnsl = System.console();
-		int quantidadeDeCaixas = Integer.parseInt(cnsl.readLine("Digite a quantidade de caixas: \n"));
-
-		double valorDaLaranjaUnidade = 0.50;
-		int porcentagemDeLucro = 40;
-		int quantidadeDeCaixasPromocao = 10;
-		int porcentagemDeDesconto = 10;
-		int porcentagemDeAcrescimo = 15;
-		int maximoParcelas = 12;
-		int valorParaDesconto = 100;
-		int quantidadeDeLaranjaPorCaixa = 50;
-		int totalDeLaranjas = quantidadeDeCaixas * quantidadeDeLaranjaPorCaixa;
-		double valorTotal = totalDeLaranjas * valorDaLaranjaUnidade;
-		double valorTotalAlterado = valorTotal;
-		int parcelas = 0;
-		String tipoPagamento = cnsl.readLine("Pagamento a vista ou parcelado ?\n [A/P]:\n");
-		boolean aVista = tipoPagamento.toUpperCase().equals("A");
-
-		if (aVista) {
-			System.out.println("Pagamento a vista foi selecionado!\n\n");
-
-			if (valorTotal > valorParaDesconto || quantidadeDeCaixas == quantidadeDeCaixasPromocao) {
-				valorTotalAlterado -= (valorTotal * porcentagemDeDesconto / 100);
-			}
-		} else {
-			parcelas = Integer.parseInt(
-					cnsl.readLine("Pagamento parcelado foi selecionado!\n\nDigite a quantidade de parcelas:\n"));
-
-			if (parcelas > maximoParcelas) {
-				System.out.println("Quantidade de parcelas inválida, iremos assumir em " + maximoParcelas + " vezes");
-				parcelas = maximoParcelas;
+		while (true) {
+			Console cnsl = System.console();
+			System.out.println("============================");
+			System.out.println("\tWelcome!!!");
+			System.out.println("============================");
+			int sair = Integer.parseInt(cnsl.readLine("Digite:\n1 para continuar\n0 para sair\n"));
+			if (sair == 0) {
+				break;
 			}
 
-			if (parcelas == 1) {
+			int quantidadeDeCaixas = Integer.parseInt(cnsl.readLine("Digite a quantidade de caixas: \n"));
+
+			double valorDaLaranjaUnidade = 0.50;
+			int porcentagemDeLucro = 40;
+			int quantidadeDeCaixasPromocao = 10;
+			int porcentagemDeDesconto = 10;
+			int porcentagemDeAcrescimo = 15;
+			int maximoParcelas = 12;
+			int valorParaDesconto = 100;
+			int quantidadeDeLaranjaPorCaixa = 50;
+			int totalDeLaranjas = quantidadeDeCaixas * quantidadeDeLaranjaPorCaixa;
+			double valorTotal = totalDeLaranjas * valorDaLaranjaUnidade;
+			double valorTotalAlterado = valorTotal;
+			int parcelas = 0;
+			String tipoPagamento = cnsl.readLine("Pagamento a vista ou parcelado ?\n [A/P]:\n");
+			boolean aVista = tipoPagamento.toUpperCase().equals("A");
+
+			if (aVista) {
 				System.out.println("Pagamento a vista foi selecionado!\n\n");
+
 				if (valorTotal > valorParaDesconto || quantidadeDeCaixas == quantidadeDeCaixasPromocao) {
 					valorTotalAlterado -= (valorTotal * porcentagemDeDesconto / 100);
 				}
-			} else if (parcelas > 5) {
-				valorTotalAlterado += (valorTotal * porcentagemDeAcrescimo / 100);
 			} else {
-				switch (parcelas) {
-					case 2:
-						porcentagemDeAcrescimo = 5;
-						break;
-					case 3:
-						porcentagemDeAcrescimo = 8;
-						break;
-					case 4:
-						porcentagemDeAcrescimo = 10;
-						break;
-					case 5:
-						porcentagemDeAcrescimo = 13;
-						break;
+				parcelas = Integer.parseInt(
+						cnsl.readLine("Pagamento parcelado foi selecionado!\n\nDigite a quantidade de parcelas:\n"));
+
+				if (parcelas > maximoParcelas) {
+					System.out
+							.println("Quantidade de parcelas inválida, iremos assumir em " + maximoParcelas + " vezes");
+					parcelas = maximoParcelas;
 				}
-				valorTotalAlterado += (valorTotal * porcentagemDeAcrescimo / 100);
+
+				if (parcelas == 1) {
+					System.out.println("Pagamento a vista foi selecionado!\n\n");
+					if (valorTotal > valorParaDesconto || quantidadeDeCaixas == quantidadeDeCaixasPromocao) {
+						valorTotalAlterado -= (valorTotal * porcentagemDeDesconto / 100);
+					}
+				} else if (parcelas > 5) {
+					valorTotalAlterado += (valorTotal * porcentagemDeAcrescimo / 100);
+				} else {
+					switch (parcelas) {
+						case 2:
+							porcentagemDeAcrescimo = 5;
+							break;
+						case 3:
+							porcentagemDeAcrescimo = 8;
+							break;
+						case 4:
+							porcentagemDeAcrescimo = 10;
+							break;
+						case 5:
+							porcentagemDeAcrescimo = 13;
+							break;
+					}
+					valorTotalAlterado += (valorTotal * porcentagemDeAcrescimo / 100);
+				}
+
 			}
 
+			double lucroAReceber = (valorTotalAlterado * porcentagemDeLucro / 100);
+
+			System.out.println("============================================\n");
+			System.out.println("Parabéns pela venda!!!\n\n");
+			System.out.println("O lucro é de R$ " + lucroAReceber);
+			System.out.println("O valor total a cobrar do cliente é de R$ " + valorTotalAlterado);
+			System.out.println("O cliente escolheu o tipo de pagamento "
+					+ (aVista ? "À vista" : "Parcelado em " + parcelas + " vezes."));
+			if (aVista) {
+				System.out
+						.println("Para pagamento a vista demos o desconto dê R$ " + (valorTotal - valorTotalAlterado));
+			} else {
+				System.out.println(
+						"Para pagamento parcelado colocamos um acréscimo de R$ " + (valorTotalAlterado - valorTotal));
+				System.out.println("o valor das parcelas será de R$ " + (valorTotalAlterado / parcelas));
+			}
+			System.out.println(" ");
+			System.out.println("============================================\n\n");
 		}
-
-		double lucroAReceber = (valorTotalAlterado * porcentagemDeLucro / 100);
-
-		System.out.println("============================================\n");
-		System.out.println("Parabéns pela venda!!!\n\n");
-		System.out.println("O lucro é de R$ " + lucroAReceber);
-		System.out.println("O valor total a cobrar do cliente é de R$ " + valorTotalAlterado);
-		System.out.println("O cliente escolheu o tipo de pagamento "
-				+ (aVista ? "À vista" : "Parcelado em " + parcelas + " vezes."));
-		if (aVista) {
-			System.out.println("Para pagamento a vista demos o desconto dê R$ " + (valorTotal - valorTotalAlterado));
-		} else {
-			System.out.println(
-					"Para pagamento parcelado colocamos um acréscimo de R$ " + (valorTotalAlterado - valorTotal));
-			System.out.println("o valor das parcelas será de R$ " + (valorTotalAlterado / parcelas));
-		}
-		System.out.println(" ");
-		System.out.println("============================================\n\n");
-
 		// SpringApplication.run(AppConsoleApplication.class, args);
 	}
 
